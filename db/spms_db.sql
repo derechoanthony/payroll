@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Feb 10, 2022 at 09:05 AM
--- Server version: 10.4.19-MariaDB
--- PHP Version: 8.0.7
+-- Host: 127.0.0.1:3306
+-- Generation Time: May 09, 2022 at 12:13 PM
+-- Server version: 10.4.10-MariaDB
+-- PHP Version: 7.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -27,15 +28,17 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin_list`
 --
 
-CREATE TABLE `admin_list` (
-  `admin_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `admin_list`;
+CREATE TABLE IF NOT EXISTS `admin_list` (
+  `admin_id` int(11) NOT NULL AUTO_INCREMENT,
   `fullname` text NOT NULL,
   `username` text NOT NULL,
   `password` text NOT NULL,
   `type` int(11) NOT NULL DEFAULT 1,
   `status` int(11) NOT NULL DEFAULT 1,
-  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`admin_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `admin_list`
@@ -50,13 +53,16 @@ INSERT INTO `admin_list` (`admin_id`, `fullname`, `username`, `password`, `type`
 -- Table structure for table `deduction_list`
 --
 
-CREATE TABLE `deduction_list` (
-  `id` int(30) NOT NULL,
+DROP TABLE IF EXISTS `deduction_list`;
+CREATE TABLE IF NOT EXISTS `deduction_list` (
+  `id` int(30) NOT NULL AUTO_INCREMENT,
   `payroll_id` int(11) NOT NULL,
   `name` text NOT NULL,
   `amount` double NOT NULL DEFAULT 0,
-  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `payroll_id` (`payroll_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `deduction_list`
@@ -66,7 +72,8 @@ INSERT INTO `deduction_list` (`id`, `payroll_id`, `name`, `amount`, `date_create
 (5, 2, 'Cash Advance', 1500, '2022-02-10 08:01:37'),
 (6, 2, 'SSS', 300, '2022-02-10 08:01:37'),
 (7, 2, 'HMDF', 100, '2022-02-10 08:01:37'),
-(8, 2, 'PhilHealth', 379, '2022-02-10 08:01:37');
+(8, 2, 'PhilHealth', 379, '2022-02-10 08:01:37'),
+(9, 3, 'jfjfj', 4444, '2022-05-05 14:12:38');
 
 -- --------------------------------------------------------
 
@@ -74,12 +81,14 @@ INSERT INTO `deduction_list` (`id`, `payroll_id`, `name`, `amount`, `date_create
 -- Table structure for table `department_list`
 --
 
-CREATE TABLE `department_list` (
-  `department_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `department_list`;
+CREATE TABLE IF NOT EXISTS `department_list` (
+  `department_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   `status` text NOT NULL DEFAULT 0,
-  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`department_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `department_list`
@@ -98,12 +107,14 @@ INSERT INTO `department_list` (`department_id`, `name`, `status`, `date_created`
 -- Table structure for table `designation_list`
 --
 
-CREATE TABLE `designation_list` (
-  `designation_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `designation_list`;
+CREATE TABLE IF NOT EXISTS `designation_list` (
+  `designation_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
   `status` text NOT NULL DEFAULT 0,
-  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`designation_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `designation_list`
@@ -124,14 +135,17 @@ INSERT INTO `designation_list` (`designation_id`, `name`, `status`, `date_create
 -- Table structure for table `earning_list`
 --
 
-CREATE TABLE `earning_list` (
-  `id` int(30) NOT NULL,
+DROP TABLE IF EXISTS `earning_list`;
+CREATE TABLE IF NOT EXISTS `earning_list` (
+  `id` int(30) NOT NULL AUTO_INCREMENT,
   `payroll_id` int(11) NOT NULL,
   `name` text NOT NULL,
   `amount` double NOT NULL DEFAULT 0,
   `taxable` int(11) NOT NULL DEFAULT 1,
-  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `payroll_id` (`payroll_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `earning_list`
@@ -147,8 +161,9 @@ INSERT INTO `earning_list` (`id`, `payroll_id`, `name`, `amount`, `taxable`, `da
 -- Table structure for table `employee_list`
 --
 
-CREATE TABLE `employee_list` (
-  `employee_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `employee_list`;
+CREATE TABLE IF NOT EXISTS `employee_list` (
+  `employee_id` int(11) NOT NULL AUTO_INCREMENT,
   `code` text NOT NULL,
   `firstname` text NOT NULL,
   `lastname` text NOT NULL,
@@ -162,15 +177,22 @@ CREATE TABLE `employee_list` (
   `designation_id` int(11) NOT NULL,
   `monthly_salary` double NOT NULL DEFAULT 0,
   `status` text NOT NULL DEFAULT 0,
-  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `sss_no` varchar(25) DEFAULT NULL,
+  `phealth_no` varchar(25) DEFAULT NULL,
+  `hmdf_no` varchar(25) DEFAULT NULL,
+  PRIMARY KEY (`employee_id`),
+  KEY `department_id` (`department_id`,`designation_id`),
+  KEY `designation_id` (`designation_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `employee_list`
 --
 
-INSERT INTO `employee_list` (`employee_id`, `code`, `firstname`, `lastname`, `middlename`, `gender`, `dob`, `email`, `contact`, `address`, `department_id`, `designation_id`, `monthly_salary`, `status`, `date_created`) VALUES
-(1, '23140623', 'Johnny', 'Smith', 'D', 'Male', '1990-06-23', 'jsmith@sample', '09123456789', 'This is a sample Address only', 5, 4, 25000, '1', '2022-02-10 07:50:31');
+INSERT INTO `employee_list` (`employee_id`, `code`, `firstname`, `lastname`, `middlename`, `gender`, `dob`, `email`, `contact`, `address`, `department_id`, `designation_id`, `monthly_salary`, `status`, `date_created`, `sss_no`, `phealth_no`, `hmdf_no`) VALUES
+(1, '23140623', 'Johnny', 'Smith', 'D', 'Male', '1990-06-23', 'jsmith@sample', '09123456789', 'This is a sample Address only', 5, 4, 25000, '1', '2022-02-10 07:50:31', '123', '23456', '585876'),
+(3, '024452', '123', '123', '', 'Male', '2022-05-19', '', '', '', 2, 4, 123, '1', '2022-05-05 12:47:30', '1231231231', '88889999229', '47778566');
 
 -- --------------------------------------------------------
 
@@ -178,8 +200,9 @@ INSERT INTO `employee_list` (`employee_id`, `code`, `firstname`, `lastname`, `mi
 -- Table structure for table `payroll_list`
 --
 
-CREATE TABLE `payroll_list` (
-  `payroll_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `payroll_list`;
+CREATE TABLE IF NOT EXISTS `payroll_list` (
+  `payroll_id` int(11) NOT NULL AUTO_INCREMENT,
   `payroll_type` int(11) NOT NULL DEFAULT 1,
   `employee_id` int(11) NOT NULL,
   `payroll_month` varchar(20) NOT NULL,
@@ -198,15 +221,18 @@ CREATE TABLE `payroll_list` (
   `total_earnings` double NOT NULL DEFAULT 0,
   `withholding_tax` double NOT NULL DEFAULT 0,
   `net_pay` double NOT NULL DEFAULT 0,
-  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`payroll_id`),
+  KEY `employee_id` (`employee_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `payroll_list`
 --
 
 INSERT INTO `payroll_list` (`payroll_id`, `payroll_type`, `employee_id`, `payroll_month`, `monthly_rate`, `daily_rate`, `hourly`, `per_minute`, `no_present`, `no_absences`, `late_undertime`, `ot_min`, `gross_income`, `taxable_income`, `nontaxable_income`, `total_deduction`, `total_earnings`, `withholding_tax`, `net_pay`, `date_created`) VALUES
-(2, 2, 1, '2022-01', 25000, 1136.364, 142.046, 2.367, 11, 0, 15, 480, 16600.659, 14600.659, 2000, 2279, 3000, 2920.132, 14321.659, '2022-02-10 07:57:58');
+(2, 2, 1, '2022-01', 25000, 1136.364, 142.046, 2.367, 11, 0, 15, 480, 16600.659, 14600.659, 2000, 2279, 3000, 2920.132, 14321.659, '2022-02-10 07:57:58'),
+(3, 1, 3, '2022-06', 123, 5.591, 0.699, 0.012, 30, -8, 40, 40, 167.73, 167.73, 0, 4444, 0, 0, -4276.27, '2022-05-05 14:12:38');
 
 -- --------------------------------------------------------
 
@@ -214,7 +240,8 @@ INSERT INTO `payroll_list` (`payroll_id`, `payroll_type`, `employee_id`, `payrol
 -- Table structure for table `settings_list`
 --
 
-CREATE TABLE `settings_list` (
+DROP TABLE IF EXISTS `settings_list`;
+CREATE TABLE IF NOT EXISTS `settings_list` (
   `meta_field` text NOT NULL,
   `meta_value` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -225,16 +252,18 @@ CREATE TABLE `settings_list` (
 -- Table structure for table `tax_table_list`
 --
 
-CREATE TABLE `tax_table_list` (
-  `tax_id` int(11) NOT NULL,
+DROP TABLE IF EXISTS `tax_table_list`;
+CREATE TABLE IF NOT EXISTS `tax_table_list` (
+  `tax_id` int(11) NOT NULL AUTO_INCREMENT,
   `payroll_type` int(11) NOT NULL DEFAULT 1,
   `range_from` double NOT NULL DEFAULT 0,
   `range_to` double NOT NULL DEFAULT 0,
   `fixed_tax` double NOT NULL DEFAULT 0,
   `percentage_over` double NOT NULL DEFAULT 0,
   `effective_date` date NOT NULL,
-  `date_created` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date_created` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`tax_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `tax_table_list`
@@ -249,115 +278,6 @@ INSERT INTO `tax_table_list` (`tax_id`, `payroll_type`, `range_from`, `range_to`
 (6, 2, 16667, 33332, 1250, 25, '2022-01-01', '2022-02-10 07:44:50'),
 (7, 2, 0, 8000, 500, 5, '2022-01-01', '2022-02-10 07:45:24'),
 (8, 1, 0, 18000, 1000, 10, '2022-01-01', '2022-02-10 07:45:44');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admin_list`
---
-ALTER TABLE `admin_list`
-  ADD PRIMARY KEY (`admin_id`);
-
---
--- Indexes for table `deduction_list`
---
-ALTER TABLE `deduction_list`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `payroll_id` (`payroll_id`);
-
---
--- Indexes for table `department_list`
---
-ALTER TABLE `department_list`
-  ADD PRIMARY KEY (`department_id`);
-
---
--- Indexes for table `designation_list`
---
-ALTER TABLE `designation_list`
-  ADD PRIMARY KEY (`designation_id`);
-
---
--- Indexes for table `earning_list`
---
-ALTER TABLE `earning_list`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `payroll_id` (`payroll_id`);
-
---
--- Indexes for table `employee_list`
---
-ALTER TABLE `employee_list`
-  ADD PRIMARY KEY (`employee_id`),
-  ADD KEY `department_id` (`department_id`,`designation_id`),
-  ADD KEY `designation_id` (`designation_id`);
-
---
--- Indexes for table `payroll_list`
---
-ALTER TABLE `payroll_list`
-  ADD PRIMARY KEY (`payroll_id`),
-  ADD KEY `employee_id` (`employee_id`);
-
---
--- Indexes for table `tax_table_list`
---
-ALTER TABLE `tax_table_list`
-  ADD PRIMARY KEY (`tax_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admin_list`
---
-ALTER TABLE `admin_list`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `deduction_list`
---
-ALTER TABLE `deduction_list`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `department_list`
---
-ALTER TABLE `department_list`
-  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `designation_list`
---
-ALTER TABLE `designation_list`
-  MODIFY `designation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- AUTO_INCREMENT for table `earning_list`
---
-ALTER TABLE `earning_list`
-  MODIFY `id` int(30) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `employee_list`
---
-ALTER TABLE `employee_list`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `payroll_list`
---
-ALTER TABLE `payroll_list`
-  MODIFY `payroll_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `tax_table_list`
---
-ALTER TABLE `tax_table_list`
-  MODIFY `tax_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
